@@ -3,6 +3,7 @@ from django.utils import timezone
 from blog.models import Post
 from django.shortcuts import redirect
 from blog.forms import CommentForm
+from django.urls import reverse
 import logging
 
 logger = logging.getLogger(__name__)
@@ -42,7 +43,11 @@ def post_detail(request, slug):
   })
 
 def post_table(request):
-  return render(request, "blog/post-table.html")
+  return render(request, "blog/post-table.html", {
+    "post_list_url": reverse("post-list")  #aqui se genera de forma automática el name de la vista, ya que usamos DefaultRouter en el api/urls.py y este genera automáticamente los nombres (names) para las URLs siguiendo este patrón: 
+    # Listado/Colección: <modelo>-list (para operaciones GET list y POST)
+    # Detalle/Instancia: <modelo>-detail (para operaciones GET/PUT/PATCH/DELETE)
+  })
 
 def get_ip(request):
   from django.http import HttpResponse
